@@ -11,12 +11,10 @@ export const protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.replace(/\s+/g, ' ').split(' ')[1];
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.DEBUG_AUTH === 'true') {
     console.log('--- Auth Debug ---');
-    console.log('Full Header Received:', `[${req.headers.authorization}]`);
+    console.log('Header Present:', Boolean(req.headers.authorization));
     console.log('Token Length:', token ? token.length : 0);
-    console.log('Starts with:', token ? token.substring(0, 10) : 'N/A');
-    console.log('Ends with:', token ? token.substring(token.length - 10) : 'N/A');
   }
 
   if (!token || token === 'undefined' || token === 'null' || token === '') {

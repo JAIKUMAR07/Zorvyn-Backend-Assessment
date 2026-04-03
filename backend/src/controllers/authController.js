@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import filterObject from '../utils/filterObject.js';
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -36,10 +37,9 @@ export const signup = catchAsync(async (req, res, next) => {
     return next(new AppError('Request body is missing or empty!', 400));
   }
 
+  const payload = filterObject(req.body, ['name', 'email', 'password']);
   const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
+    ...payload,
     role: 'viewer', // Hardcoded for security: No one can register as anything else
   });
 
@@ -56,10 +56,15 @@ export const login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide email and password!', 400));
   }
 
-  const user = await User.findOne({ email }).select('+password');
+  const normalizedEmail = email.toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail }).select('+password +active');
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
+  }
+
+  if (user.active === false) {
+    return next(new AppError('This user account is inactive. Please contact support.', 403));
   }
 
   createSendToken(user, 200, res);

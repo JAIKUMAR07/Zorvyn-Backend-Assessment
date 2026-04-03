@@ -8,27 +8,34 @@ import morgan from "morgan";
 
 import AppError from "./utils/AppError.js";
 import globalErrorHandler from "./middleware/errorMiddleware.js";
+import sanitizeMiddleware from "./middleware/sanitizeMiddleware.js";
 
 // Route imports
 import authRoutes from "./routes/authRoutes.js";
 import recordRoutes from "./routes/recordRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import visualizationRoutes from "./routes/visualizationRoutes.js";
 
 const app = express();
+app.disable("x-powered-by");
 
 // 1) GLOBAL MIDDLEWARES
-app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" })); // Added for extra compatibility
 app.use(cors());
-app.use(helmet()); 
+app.use(helmet());
 
 app.use(hpp());
+app.use(sanitizeMiddleware);
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/records", recordRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/visualizations", visualizationRoutes);
 app.use("/api/v1/users", userRoutes);
 
 app.get("/", (req, res) => {

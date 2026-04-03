@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
+import app from './src/app.js';
 
 dotenv.config();
 
-import app from './src/app.js';
-
 process.on('uncaughtException', (err) => {
-  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.log('UNCAUGHT EXCEPTION! Shutting down...');
   console.log(err.name, err.message);
   process.exit(1);
 });
@@ -19,7 +18,7 @@ const server = app.listen(PORT, () => {
 });
 
 process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.log('UNHANDLED REJECTION! Shutting down...');
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);

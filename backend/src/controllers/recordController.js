@@ -1,6 +1,11 @@
 import Record from '../models/Record.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import escapeRegExp from '../utils/escapeRegExp.js';
+import filterObject from '../utils/filterObject.js';
+
+const CREATE_FIELDS = ['amount', 'type', 'category', 'description', 'date', 'user'];
+const UPDATE_FIELDS = ['amount', 'type', 'category', 'description', 'date'];
 
 export const getAllRecords = catchAsync(async (req, res, next) => {
   let filter = {};
@@ -14,9 +19,10 @@ export const getAllRecords = catchAsync(async (req, res, next) => {
   if (req.query.type) filter.type = req.query.type;
   if (req.query.category) filter.category = req.query.category;
 
-  // ✅ Search Functionality (Case-insensitive description search)
+  // Search Functionality (Case-insensitive description search)
   if (req.query.search) {
-    filter.description = { $regex: req.query.search, $options: 'i' };
+    const safeSearch = escapeRegExp(req.query.search);
+    filter.description = { $regex: safeSearch, $options: 'i' };
   }
 
   // Date filtering
@@ -28,8 +34,8 @@ export const getAllRecords = catchAsync(async (req, res, next) => {
   }
 
   // Pagination
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 50;
+  const page = Math.max(parseInt(req.query.page) || 1, 1);
+  const limit = Math.min(Math.max(parseInt(req.query.limit) || 50, 1), 200);
   const skip = (page - 1) * limit;
 
   // Execute Query
@@ -77,9 +83,10 @@ export const getRecord = catchAsync(async (req, res, next) => {
 export const createRecord = catchAsync(async (req, res, next) => {
   // As per your plan: Only Admin can create
   // (Middleware handles the role check, this ensures the user is assigned correctly)
-  if (!req.body.user) req.body.user = req.user._id;
+  const payload = filterObject(req.body, CREATE_FIELDS);
+  if (!payload.user) payload.user = req.user._id;
 
-  const newRecord = await Record.create(req.body);
+  const newRecord = await Record.create(payload);
 
   res.status(201).json({
     status: 'success',
@@ -91,7 +98,8 @@ export const createRecord = catchAsync(async (req, res, next) => {
 
 export const updateRecord = catchAsync(async (req, res, next) => {
   // As per your plan: Only Admin can update
-  const updatedRecord = await Record.findByIdAndUpdate(req.params.id, req.body, {
+  const payload = filterObject(req.body, UPDATE_FIELDS);
+  const updatedRecord = await Record.findByIdAndUpdate(req.params.id, payload, {
     new: true,
     runValidators: true
   });

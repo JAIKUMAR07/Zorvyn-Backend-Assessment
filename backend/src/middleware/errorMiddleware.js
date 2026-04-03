@@ -6,8 +6,16 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateFieldsDB = (err) => {
-  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
-  const message = `Duplicate field value: ${value}. Please use another value!`;
+  let value = '';
+  if (err.keyValue) {
+    value = JSON.stringify(err.keyValue);
+  } else if (err.message) {
+    const match = err.message.match(/(["'])(\\?.)*?\1/);
+    value = match ? match[0] : '';
+  }
+  const message = value
+    ? `Duplicate field value: ${value}. Please use another value!`
+    : 'Duplicate field value. Please use another value!';
   return new AppError(message, 400);
 };
 
@@ -37,7 +45,7 @@ const sendErrorProd = (err, res) => {
       message: err.message,
     });
   } else {
-    console.error('ERROR 💥', err);
+    console.error('ERROR', err);
     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong!',
@@ -51,16 +59,17 @@ export default (err, req, res, next) => {
 
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
-    let error = { ...err };
-    error.message = err.message;
-
-    if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
-    if (error.name === 'JsonWebTokenError') error = handleJWTError();
-    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-
-    sendErrorProd(error, res);
+    return;
   }
+
+  let error = { ...err };
+  error.message = err.message;
+
+  if (error.name === 'CastError') error = handleCastErrorDB(error);
+  if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+  if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+  if (error.name === 'JsonWebTokenError') error = handleJWTError();
+  if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+
+  sendErrorProd(error, res);
 };
