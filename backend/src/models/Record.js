@@ -1,23 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
+//  schema to store the records  of finance
 const recordSchema = new mongoose.Schema(
   {
     amount: {
       type: Number,
-      required: [true, 'A record must have an amount'],
-      min: [1, 'Amount must be a positive number'],
+      required: [true, "A record must have an amount"],
+      min: [1, "Amount must be a positive number"],
     },
     type: {
       type: String,
-      required: [true, 'A record must have a type (income/expense)'],
+      required: [true, "A record must have a type (income/expense)"],
       enum: {
-        values: ['income', 'expense'],
-        message: 'Type must be either: income or expense',
+        values: ["income", "expense"],
+        message: "Type must be either: income or expense",
       },
     },
     category: {
       type: String,
-      required: [true, 'A record must have a category'],
+      required: [true, "A record must have a category"],
       trim: true,
     },
     description: {
@@ -30,17 +31,17 @@ const recordSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      required: [true, 'A record must belong to a user'],
+      ref: "User",
+      required: [true, "A record must belong to a user"],
     },
   },
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
-const Record = mongoose.model('Record', recordSchema);
+const Record = mongoose.model("Record", recordSchema);
 
 export default Record;

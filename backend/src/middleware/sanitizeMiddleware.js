@@ -1,3 +1,4 @@
+// for sanitize  the request body  for mongo injection
 const sanitizeValue = (value) => {
   if (Array.isArray(value)) {
     return value.map(sanitizeValue);
@@ -15,6 +16,7 @@ const sanitizeValue = (value) => {
   return value;
 };
 
+// apply this middleware to all the routes
 const sanitizeMiddleware = (req, _res, next) => {
   if (req.body) req.body = sanitizeValue(req.body);
   if (req.query) req.query = sanitizeValue(req.query);

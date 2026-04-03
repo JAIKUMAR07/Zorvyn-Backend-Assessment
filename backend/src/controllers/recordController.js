@@ -1,17 +1,24 @@
-import Record from '../models/Record.js';
-import catchAsync from '../utils/catchAsync.js';
-import AppError from '../utils/AppError.js';
-import escapeRegExp from '../utils/escapeRegExp.js';
-import filterObject from '../utils/filterObject.js';
+import Record from "../models/Record.js";
+import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/AppError.js";
+import escapeRegExp from "../utils/escapeRegExp.js";
+import filterObject from "../utils/filterObject.js";
 
-const CREATE_FIELDS = ['amount', 'type', 'category', 'description', 'date', 'user'];
-const UPDATE_FIELDS = ['amount', 'type', 'category', 'description', 'date'];
+const CREATE_FIELDS = [
+  "amount",
+  "type",
+  "category",
+  "description",
+  "date",
+  "user",
+];
+const UPDATE_FIELDS = ["amount", "type", "category", "description", "date"];
 
 export const getAllRecords = catchAsync(async (req, res, next) => {
   let filter = {};
-  
+
   // Role-Based Behavior: Viewer/Analyst see OWN, Admin sees ALL
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== "admin") {
     filter = { user: req.user._id };
   }
 
@@ -22,7 +29,7 @@ export const getAllRecords = catchAsync(async (req, res, next) => {
   // Search Functionality (Case-insensitive description search)
   if (req.query.search) {
     const safeSearch = escapeRegExp(req.query.search);
-    filter.description = { $regex: safeSearch, $options: 'i' };
+    filter.description = { $regex: safeSearch, $options: "i" };
   }
 
   // Date filtering
@@ -40,8 +47,8 @@ export const getAllRecords = catchAsync(async (req, res, next) => {
 
   // Execute Query
   const records = await Record.find(filter)
-    .populate('user', 'name email') // Matching your example (2.2)
-    .sort('-date')
+    .populate("user", "name email") // Matching your example (2.2)
+    .sort("-date")
     .skip(skip)
     .limit(limit);
 
@@ -49,14 +56,14 @@ export const getAllRecords = catchAsync(async (req, res, next) => {
 
   // Response Format Matching Example 2.2
   res.status(200).json({
-    status: 'success',
+    status: "success",
     results: records.length,
     total,
     page,
     pages: Math.ceil(total / limit),
     data: {
-      records
-    }
+      records,
+    },
   });
 });
 
@@ -64,35 +71,40 @@ export const getRecord = catchAsync(async (req, res, next) => {
   const record = await Record.findById(req.params.id);
 
   if (!record) {
-    return next(new AppError('No record found with that ID', 404));
+    return next(new AppError("No record found with that ID", 404));
   }
 
   // Security check: cannot view other's records unless admin
-  if (req.user.role !== 'admin' && record.user.toString() !== req.user._id.toString()) {
-    return next(new AppError('You do not have permission to view this record', 403));
+  if (
+    req.user.role !== "admin" &&
+    record.user.toString() !== req.user._id.toString()
+  ) {
+    return next(
+      new AppError("You do not have permission to view this record", 403),
+    );
   }
 
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      record
-    }
+      record,
+    },
   });
 });
 
 export const createRecord = catchAsync(async (req, res, next) => {
   // As per your plan: Only Admin can create
-  // (Middleware handles the role check, this ensures the user is assigned correctly)
+  // Middleware handles the role check, this ensures the user is assigned correctly)
   const payload = filterObject(req.body, CREATE_FIELDS);
   if (!payload.user) payload.user = req.user._id;
 
   const newRecord = await Record.create(payload);
 
   res.status(201).json({
-    status: 'success',
+    status: "success",
     data: {
-      record: newRecord
-    }
+      record: newRecord,
+    },
   });
 });
 
@@ -101,18 +113,18 @@ export const updateRecord = catchAsync(async (req, res, next) => {
   const payload = filterObject(req.body, UPDATE_FIELDS);
   const updatedRecord = await Record.findByIdAndUpdate(req.params.id, payload, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   if (!updatedRecord) {
-    return next(new AppError('No record found with that ID', 404));
+    return next(new AppError("No record found with that ID", 404));
   }
 
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      record: updatedRecord
-    }
+      record: updatedRecord,
+    },
   });
 });
 
@@ -121,11 +133,11 @@ export const deleteRecord = catchAsync(async (req, res, next) => {
   const record = await Record.findByIdAndDelete(req.params.id);
 
   if (!record) {
-    return next(new AppError('No record found with that ID', 404));
+    return next(new AppError("No record found with that ID", 404));
   }
 
   res.status(204).json({
-    status: 'success',
-    data: null
+    status: "success",
+    data: null,
   });
 });
