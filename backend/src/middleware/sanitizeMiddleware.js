@@ -16,11 +16,24 @@ const sanitizeValue = (value) => {
   return value;
 };
 
+const sanitizeInPlace = (obj) => {
+  if (!obj || typeof obj !== "object") return;
+  const sanitized = sanitizeValue(obj);
+  // Clear the original object without replacing its reference
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      delete obj[key];
+    }
+  }
+  // Re-assign the clean values
+  Object.assign(obj, sanitized);
+};
+
 // apply this middleware to all the routes
 const sanitizeMiddleware = (req, _res, next) => {
-  if (req.body) req.body = sanitizeValue(req.body);
-  if (req.query) req.query = sanitizeValue(req.query);
-  if (req.params) req.params = sanitizeValue(req.params);
+  if (req.body) req.body = sanitizeValue(req.body); // req.body is usually safe to replace
+  if (req.query) sanitizeInPlace(req.query);
+  if (req.params) sanitizeInPlace(req.params);
   next();
 };
 

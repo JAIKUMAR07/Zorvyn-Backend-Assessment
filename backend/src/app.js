@@ -18,18 +18,34 @@ import userRoutes from "./routes/userRoutes.js";
 import visualizationRoutes from "./routes/visualizationRoutes.js";
 
 const app = express();
+
+// A) CRITICAL: Fix for "Getter Only" issue in strict/production environments
+app.use((req, res, next) => {
+  if (req.query) {
+    const originalQuery = req.query;
+    Object.defineProperty(req, "query", {
+      value: { ...originalQuery },
+      writable: true,
+      configurable: true,
+      enumerable: true,
+    });
+  }
+  next();
+});
+
 app.disable("x-powered-by");
 
 // 1) GLOBAL MIDDLEWARES
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(express.json({ limit: "10kb" }));
-app.use(express.urlencoded({ extended: true, limit: "10kb" })); // Added for extra compatibility
+
 app.use(cors());
 app.use(helmet());
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
-app.use(hpp());
+app.use(hpp()); // Now safe because we made query writable above
 app.use(sanitizeMiddleware);
 
 app.use("/api/v1/auth", authRoutes);
