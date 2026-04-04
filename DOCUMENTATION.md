@@ -30,6 +30,16 @@
 
 Build a robust backend API for a finance dashboard system that enables users to track income/expenses, generate analytics, and visualize financial data with role-based access control.
 
+This backend project enables small to medium businesses to track income/expenses, generate financial analytics, visualize data through charts, and enforce role-based access control across multiple team members (Admin, Analyst, Viewer).
+
+### usiness Use Cases
+
+- Small businesses: for tracking income and expenses
+- Teams: for team members needing role-based financial data access
+- Managers: for viewing analytics and trends (Analyst role)
+- indivisual user: can create and manage their personal data (Admin role)
+- Employees: for viewing only their own transactions (Viewer role)
+
 ### **Key Capabilities**
 
 | Capability                                 | Status |

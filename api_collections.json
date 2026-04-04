@@ -1,9 +1,9 @@
 {
   "info": {
-    "name": "Finance Backend API - Complete Collection",
-    "description": "Complete API collection for Finance Dashboard with RBAC, Visualizations, and Advanced Analytics",
+    "name": "Finance Backend API - Business Edition",
+    "description": "Complete Postman Collection for Business Finance Dashboard API with RBAC, Visualizations & Analytics",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "3.0.0"
+    "version": "4.0.0"
   },
   "variable": [
     {
@@ -37,8 +37,7 @@
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/"
-          },
-          "response": []
+          }
         },
         {
           "name": "Health Check",
@@ -46,8 +45,7 @@
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/health"
-          },
-          "response": []
+          }
         },
         {
           "name": "API v1 Health",
@@ -55,8 +53,7 @@
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/api/v1/health"
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -74,9 +71,6 @@
                   "if (pm.response.code === 201 && response.token) {",
                   "    pm.environment.set(\"auth_token\", response.token);",
                   "    console.log(\"✅ Registration successful! Token saved.\");",
-                  "    console.log(\"Role: viewer (default)\");",
-                  "} else if (pm.response.code === 400 && response.message?.includes('exists')) {",
-                  "    console.log(\"⚠️ User already exists. Login instead.\");",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -85,27 +79,17 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"name\": \"New Business User\",\n  \"email\": \"newuser@business.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/auth/signup"
-          },
-          "response": []
+          }
         },
         {
-          "name": "2.2 Login - Admin",
+          "name": "2.2 Login - Admin (John Martinez)",
           "event": [
             {
               "listen": "test",
@@ -123,27 +107,17 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"admin@finance.com\",\n  \"password\": \"admin123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/auth/login"
-          },
-          "response": []
+          }
         },
         {
-          "name": "2.3 Login - Analyst",
+          "name": "2.3 Login - Analyst (Sarah Williams)",
           "event": [
             {
               "listen": "test",
@@ -161,27 +135,17 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"analyst@finance.com\",\n  \"password\": \"analyst123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/auth/login"
-          },
-          "response": []
+          }
         },
         {
-          "name": "2.4 Login - Viewer",
+          "name": "2.4 Login - Viewer (David Chen)",
           "event": [
             {
               "listen": "test",
@@ -199,38 +163,50 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"viewer@finance.com\",\n  \"password\": \"viewer123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/auth/login"
-          },
-          "response": []
+          }
         },
         {
-          "name": "2.5 Get My Profile",
+          "name": "2.5 Login - Emma Thompson (Analyst)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"emma@techsolutions.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{base_url}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "2.6 Login - Robert Kumar (Viewer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"robert@digitalmarketing.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{base_url}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "2.7 Get My Profile",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/auth/me"
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -257,168 +233,122 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 50000,\n  \"type\": \"income\",\n  \"category\": \"Salary\",\n  \"description\": \"April salary\",\n  \"date\": \"2026-04-01\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"amount\": 75000,\n  \"type\": \"income\",\n  \"category\": \"Product Sales\",\n  \"description\": \"Q2 product sales revenue\",\n  \"date\": \"2026-04-01\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/records"
-          },
-          "response": []
+          }
         },
         {
           "name": "3.2 Get All Records (With Pagination)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/records?page=1&limit=10",
-            "description": "Default: page=1, limit=50"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records?page=1&limit=10"
+          }
         },
         {
-          "name": "3.3 Filter by Type (Income/Expense)",
+          "name": "3.3 Filter by Type - Income",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/records?type=income"
-          },
-          "response": []
+          }
         },
         {
-          "name": "3.4 Filter by Category",
+          "name": "3.4 Filter by Type - Expense",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/records?category=Salary"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records?type=expense"
+          }
         },
         {
-          "name": "3.5 Search by Description",
+          "name": "3.5 Filter by Business Category",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/records?search=salary",
-            "description": "Case-insensitive search in description field"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records?category=Software%20Licenses"
+          }
         },
         {
-          "name": "3.6 Date Range Filter",
+          "name": "3.6 Search by Description",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/records?fromDate=2026-04-01&toDate=2026-04-30"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records?search=marketing"
+          }
         },
         {
-          "name": "3.7 Combined Filters",
+          "name": "3.7 Date Range Filter",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/records?type=expense&category=Food&search=dinner&fromDate=2026-04-01&toDate=2026-04-30&page=1&limit=20"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records?fromDate=2026-01-01&toDate=2026-03-31"
+          }
         },
         {
-          "name": "3.8 Get Single Record",
+          "name": "3.8 Combined Filters",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/records?type=expense&category=Marketing%20Ads&fromDate=2026-01-01&toDate=2026-06-30&page=1&limit=20"
+          }
+        },
+        {
+          "name": "3.9 Get Single Record",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/records/{{record_id}}"
-          },
-          "response": []
+          }
         },
         {
-          "name": "3.9 Update Record (Admin Only)",
+          "name": "3.10 Update Record (Admin Only)",
           "request": {
             "method": "PATCH",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 55000,\n  \"description\": \"April salary with bonus\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"amount\": 85000,\n  \"description\": \"Q2 product sales revenue (updated)\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/records/{{record_id}}"
-          },
-          "response": []
+          }
         },
         {
-          "name": "3.10 Delete Record (Admin Only)",
+          "name": "3.11 Delete Record (Admin Only)",
           "request": {
             "method": "DELETE",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/records/{{record_id}}"
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -426,60 +356,44 @@
       "name": "📊 4. Dashboard Analytics",
       "item": [
         {
-          "name": "4.1 Financial Summary (Income/Expense/Balance)",
+          "name": "4.1 Financial Summary",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/dashboard/summary"
-          },
-          "response": []
+          }
         },
         {
           "name": "4.2 Category Statistics",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/dashboard/category-stats"
-          },
-          "response": []
+          }
         },
         {
-          "name": "4.3 Recent Activity (Last 10 Transactions)",
+          "name": "4.3 Recent Activity",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/dashboard/recent"
-          },
-          "response": []
+          }
         },
         {
-          "name": "4.4 Monthly Trends (Analyst & Admin Only)",
+          "name": "4.4 Monthly Trends (Analyst/Admin Only)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/dashboard/trends"
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -487,228 +401,174 @@
       "name": "📈 5. Visualizations (Charts)",
       "item": [
         {
-          "name": "5.1 Monthly Comparison (Bar Chart)",
+          "name": "5.1 Monthly Bar Chart",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/monthly?period=thisYear"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.2 Monthly Comparison - Custom Range",
+          "name": "5.2 Monthly Bar Chart - Custom Range",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/monthly?period=custom&fromDate=2026-01-01&toDate=2026-06-30"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.3 Category Breakdown (Pie Chart) - Expense",
+          "name": "5.3 Category Pie Chart - Expenses",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/visualizations/categories?period=thisMonth&type=expense&limit=6"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/visualizations/categories?period=thisMonth&type=expense&limit=8"
+          }
         },
         {
-          "name": "5.4 Category Breakdown (Both Income & Expense)",
+          "name": "5.4 Category Pie Chart - Income",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/visualizations/categories?period=thisMonth&type=income&limit=6"
+          }
+        },
+        {
+          "name": "5.5 Category Both (Income & Expense)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/categories?period=thisMonth&type=both&limit=5"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.5 Trends Over Time (Line Chart)",
+          "name": "5.6 Trends Line Chart",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/trends?period=last6months&groupBy=month&type=both"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.6 Trends with Weekly Granularity",
+          "name": "5.7 Trends Weekly",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/trends?period=last3months&groupBy=week&type=expense"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.7 Trends with Previous Period Comparison",
+          "name": "5.8 Trends with Comparison",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/trends?period=thisMonth&groupBy=week&compare=previousMonth"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.8 Trends with Projection",
+          "name": "5.9 Trends with Projection",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/trends?period=last30days&groupBy=day&includeProjection=true"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.9 Stacked Bar (Income vs Expense by Category)",
+          "name": "5.10 Stacked Bar Chart",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/stacked?period=thisMonth"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.10 Stacked Bar - Custom Range",
+          "name": "5.11 Stacked Bar - Custom Range",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/stacked?period=custom&fromDate=2026-01-01&toDate=2026-06-30"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.11 Top Expenses (Horizontal Bar)",
+          "name": "5.12 Top Expenses",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/top-expenses?period=thisMonth&limit=5"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.12 Top Expenses - Compare with Previous Month",
+          "name": "5.13 Top Expenses - Compare Previous",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/top-expenses?period=thisMonth&limit=5&compare=previousMonth"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.13 Cumulative Cash Flow (Area Chart)",
+          "name": "5.14 Cumulative Cash Flow",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/visualizations/cashflow?period=last6months&startingBalance=25000"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/visualizations/cashflow?period=last6months&startingBalance=100000"
+          }
         },
         {
-          "name": "5.14 Cash Flow with Projection",
+          "name": "5.15 Cash Flow with Projection",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
-            "url": "{{base_url}}/api/v1/visualizations/cashflow?period=last6months&startingBalance=25000&includeProjection=true"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/visualizations/cashflow?period=last6months&startingBalance=100000&includeProjection=true"
+          }
         },
         {
-          "name": "5.15 Comparison Dashboard (MoM)",
+          "name": "5.16 Comparison MoM",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/compare?type=mom&year=2026&month=4"
-          },
-          "response": []
+          }
         },
         {
-          "name": "5.16 Comparison Dashboard (YoY)",
+          "name": "5.17 Comparison YoY",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/visualizations/compare?type=yoy&year=2026&month=4"
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -725,7 +585,7 @@
                   "const response = pm.response.json();",
                   "if (response.data?.users?.length > 0 && response.data.users[0]._id) {",
                   "    pm.environment.set(\"user_id\", response.data.users[0]._id);",
-                  "    console.log(\"✅ User ID saved for testing.\");",
+                  "    console.log(\"✅ User ID saved.\");",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -735,223 +595,141 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
             ],
             "url": "{{base_url}}/api/v1/users"
-          },
-          "response": []
+          }
         },
         {
           "name": "6.2 Update User Role",
           "request": {
             "method": "PATCH",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"analyst\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/users/{{user_id}}"
-          },
-          "response": []
+          }
         },
         {
-          "name": "6.3 Update User Details",
+          "name": "6.3 Update User Name",
           "request": {
             "method": "PATCH",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated User Name\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"name\": \"Updated Business Name\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/users/{{user_id}}"
-          },
-          "response": []
+          }
         },
         {
           "name": "6.4 Deactivate User",
           "request": {
             "method": "PATCH",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"active\": false\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/users/status/{{user_id}}"
-          },
-          "response": []
+          }
         },
         {
           "name": "6.5 Activate User",
           "request": {
             "method": "PATCH",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"active\": true\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/users/status/{{user_id}}"
-          },
-          "response": []
+          }
         }
       ]
     },
     {
-      "name": "🔒 7. Role-Based Access Control Tests",
+      "name": "🔒 7. RBAC Tests",
       "item": [
         {
-          "name": "7.1 Test: Viewer CANNOT Create Record",
+          "name": "7.1 Viewer CANNOT Create Record",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 1000,\n  \"type\": \"expense\",\n  \"category\": \"Test\",\n  \"description\": \"This should fail for viewer\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"amount\": 10000,\n  \"type\": \"expense\",\n  \"category\": \"Office Supplies\",\n  \"description\": \"Should fail for viewer\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/records"
-          },
-          "response": []
+          }
         },
         {
-          "name": "7.2 Test: Viewer CANNOT Update Record",
+          "name": "7.2 Viewer CANNOT Access Users",
           "request": {
-            "method": "PATCH",
+            "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/users"
+          }
+        },
+        {
+          "name": "7.3 Viewer CANNOT Access Monthly Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/dashboard/trends"
+          }
+        },
+        {
+          "name": "7.4 Analyst CAN Access Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/dashboard/trends"
+          }
+        },
+        {
+          "name": "7.5 Analyst CANNOT Create Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 9999\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"amount\": 5000,\n  \"type\": \"expense\",\n  \"category\": \"Marketing Ads\",\n  \"description\": \"Should fail for analyst\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
-            "url": "{{base_url}}/api/v1/records/{{record_id}}"
-          },
-          "response": []
-        },
-        {
-          "name": "7.3 Test: Viewer CANNOT Delete Record",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": "{{base_url}}/api/v1/records/{{record_id}}"
-          },
-          "response": []
-        },
-        {
-          "name": "7.4 Test: Viewer CANNOT Access User Management",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": "{{base_url}}/api/v1/users"
-          },
-          "response": []
-        },
-        {
-          "name": "7.5 Test: Analyst CAN Access Monthly Trends",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              }
-            ],
-            "url": "{{base_url}}/api/v1/dashboard/trends"
-          },
-          "response": []
+            "url": "{{base_url}}/api/v1/records"
+          }
         }
       ]
     },
@@ -962,109 +740,71 @@
           "name": "8.1 Invalid Login",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"wrong@email.com\",\n  \"password\": \"wrongpassword\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/auth/login"
-          },
-          "response": []
+          }
         },
         {
-          "name": "8.2 No Token (Unauthorized)",
+          "name": "8.2 No Token",
           "request": {
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/api/v1/auth/me"
-          },
-          "response": []
+          }
         },
         {
           "name": "8.3 Invalid Token",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer invalid.token.here"
-              }
+              { "key": "Authorization", "value": "Bearer invalid.token.here" }
             ],
             "url": "{{base_url}}/api/v1/auth/me"
-          },
-          "response": []
+          }
         },
         {
-          "name": "8.4 Create Record with Negative Amount",
+          "name": "8.4 Negative Amount",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": -100,\n  \"type\": \"expense\",\n  \"category\": \"Test\",\n  \"description\": \"Negative amount should fail\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"amount\": -5000,\n  \"type\": \"expense\",\n  \"category\": \"Test\",\n  \"description\": \"Negative amount should fail\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/records"
-          },
-          "response": []
+          }
         },
         {
-          "name": "8.5 Invalid Endpoint (404)",
-          "request": {
-            "method": "GET",
-            "url": "{{base_url}}/api/v1/invalid-endpoint"
-          },
-          "response": []
-        },
-        {
-          "name": "8.6 Create Record without Required Fields",
+          "name": "8.5 Missing Required Fields",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"description\": \"Missing amount and type\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             },
             "url": "{{base_url}}/api/v1/records"
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "8.6 Invalid Endpoint",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/invalid-endpoint"
+          }
         }
       ]
     }

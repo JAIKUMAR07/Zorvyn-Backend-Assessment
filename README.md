@@ -16,7 +16,13 @@
 
 ## 📋 Overview
 
-A **production-ready RESTful API** for a comprehensive finance dashboard system. Built with Node.js, Express, and MongoDB, this backend enables users to track income/expenses, generate analytics, visualize financial data, and enforce role-based access control.
+A production-ready RESTful API for a Business/Organizational Finance Dashboard system built with Node.js, Express, and MongoDB.
+
+This backend enables small to medium businesses to track income/expenses, generate analytics, visualize financial data, and enforce role-based access control across multiple users (Admin, Analyst, Viewer).
+
+While the architecture supports personal finance use cases, it is specifically designed for business scenarios where different team members need different levels of access to financial records.
+
+Key capabilities include: JWT authentication, role-based permissions, complete CRUD operations, advanced filtering with search and pagination, dashboard analytics, and 7 chart-ready visualization endpoints.
 
 ### 🎯 Key Capabilities
 
